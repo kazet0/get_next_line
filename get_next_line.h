@@ -6,7 +6,7 @@
 /*   By: mhan <mhan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 23:14:36 by mhan              #+#    #+#             */
-/*   Updated: 2024/06/06 01:16:57 by mhan             ###   ########.fr       */
+/*   Updated: 2024/06/06 14:20:38 by mhan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@
 #include <unistd.h>
 
 char	*get_next_line(int fd);
+size_t	ft_line_len(const char *str);
 
 #endif
