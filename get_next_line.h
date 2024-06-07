@@ -6,7 +6,7 @@
 /*   By: mhan <mhan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 23:14:36 by mhan              #+#    #+#             */
-/*   Updated: 2024/06/06 14:20:38 by mhan             ###   ########.fr       */
+/*   Updated: 2024/06/07 15:48:47 by mhan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,8 @@
 
 char	*get_next_line(int fd);
 size_t	ft_line_len(const char *str);
+char	*get_buffer(int fd);
+int	ft_is_line(char c);
+char	*ft_strdup(const char *s1);
 
 #endif
