@@ -6,30 +6,49 @@
 /*   By: mhan <mhan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:01:43 by mhan              #+#    #+#             */
-/*   Updated: 2024/06/07 14:35:49 by mhan             ###   ########.fr       */
+/*   Updated: 2024/06/09 18:08:57 by mhan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-/*
--on met ce qu'on a lu dans buf dans tmp
--on cherche '\n' dans tmp
--on doit stocker notre ligne qqpart
--on doit faire une fonction qui permet de stockers les parties de notre ligne
--utilise une variable static pour l'allocation de memoire de la ligne finale a retourner
-*/
+char	*get_line(const char *str)
+{
+	int	i;
+	char	*line;
+
+	i= 0;
+	while (str[i] != '\n')
+		i++;
+	line = malloc (i + 1);
+	i = 0;
+	while (str[i] != '\n')
+	{
+		line[i] = str[i];
+		i++;
+	}
+	return (line);
+}
+
+int	search_new_line(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 char	*get_next_line(int fd)
 {
-	char	*buf;
+	static char	*line;
+	static char *next_line;
 	char	*tmp;
-	ssize_t	read_bytes;
 
-	buf = malloc (sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buf)
-		return (NULL);
-	read_bytes = read(fd, buf, BUFFER_SIZE);
-	if (fd == -1 || read_bytes == -1 || read_bytes == 0)
-		return (NULL);
+	next_line = ft_strchr(/*mettre la static dans le seul cas ou on a une ligne entiere*/);
 }
