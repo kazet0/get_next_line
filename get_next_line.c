@@ -6,70 +6,81 @@
 /*   By: mhan <mhan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:01:43 by mhan              #+#    #+#             */
-/*   Updated: 2024/06/16 03:01:27 by mhan             ###   ########.fr       */
+/*   Updated: 2024/06/16 18:09:08 by mhan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strdup(const char *s1)
+char	*get_left_line(char *line)
 {
-	char	*dst;
+	char	*str;
 	int		i;
-	int		s_len;
 
-	s_len = ft_strlen(s1);
-	dst = malloc(sizeof(char) * (s_len + 1));
-	if (!dst)
-		return (NULL);
 	i = 0;
-	while (s1[i])
-	{
-		dst[i] = s1[i];
+	if (!line)
+		return (NULL);
+	while (line[i] && line[i] != '\n')
 		i++;
+	if (line[i] == '\0')
+		return (NULL);
+	str = ft_substr(line, i + 1, ft_strlen(line) - ((size_t)i + 1));
+	if (!*str || !str)
+	{
+		free(str);
+		return (NULL);
 	}
-	dst[i] = '\0';
-	return (dst);
+	line[i + 1] = '\0';
+	return (str);
 }
 
-/*read the fd and join all the buffers read together to get the line*/
-char	*ft_read_fd(int fd, char *line)
+char	*ft_read_fd(int fd, char *stash, char *buf)
 {
-	char	*buf;
-	int	read_bytes;
-	
-	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buf)
-		return (NULL);
+	int		read_bytes;
+
 	read_bytes = 1;
-	while (!ft_strchr(line, '\n') && read_bytes > 0)
+	while (!ft_strchr(stash, '\n') && read_bytes > 0)
 	{
 		read_bytes = read(fd, buf, BUFFER_SIZE);
 		if (read_bytes == -1)
 		{
-			free(buf);
-			buf = NULL;
+			free(stash);
 			return (NULL);
 		}
 		buf[read_bytes] = '\0';
-		line = ft_strjoin(line, buf);
+		if (!stash)
+			stash = ft_strdup("");
+		stash = ft_strjoin(stash, buf);
+		if (!stash)
+			return (NULL);
 	}
-	free(buf);
-	return (line);
+	return (stash);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*stash;
-	char	*line;
-	
+	char		*line;
+	char		*buf;
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
+	{
+		if (stash)
+			free(stash);
 		return (NULL);
-	line = ft_strdup("");
-	stash = ft_read_fd(fd, line);
-	if (!stash)
+	}
+	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf || read(fd, buf, 0) <= 0)
+	{
+		free(stash);
+		free(buf);
+		stash = NULL;
 		return (NULL);
-	line = get_line(stash);
-	stash = get_left(stash);
+	}
+	line = ft_read_fd(fd, stash, buf);
+	free(buf);
+	if (!line)
+		return (NULL);
+	stash = get_left_line(line);
 	return (line);
 }

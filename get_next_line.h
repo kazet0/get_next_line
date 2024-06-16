@@ -6,7 +6,7 @@
 /*   By: mhan <mhan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/05 23:14:36 by mhan              #+#    #+#             */
-/*   Updated: 2024/06/16 02:38:50 by mhan             ###   ########.fr       */
+/*   Updated: 2024/06/16 17:24:23 by mhan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ size_t	ft_strlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
-char	*get_line(char *line);
-char	*get_left(char *line);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*get_left_line(char *line);
+char	*ft_read_fd(int fd, char *stash, char *buf);
 
 #endif

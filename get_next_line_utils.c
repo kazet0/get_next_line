@@ -6,7 +6,7 @@
 /*   By: mhan <mhan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:02:56 by mhan              #+#    #+#             */
-/*   Updated: 2024/06/16 02:58:39 by mhan             ###   ########.fr       */
+/*   Updated: 2024/06/16 17:39:54 by mhan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,51 +64,48 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-/*remove the part after the character \n*/
-char	*get_line(char *line)
+char	*ft_strdup(const char *s1)
 {
-	char	*str;
-	int	i;
+	char	*dst;
+	int		i;
+	int		s_len;
 
-	if (!line)
+	s_len = ft_strlen(s1);
+	dst = malloc(sizeof(char) * (s_len + 1));
+	if (!dst)
 		return (NULL);
 	i = 0;
-	while (line[i] && line[i] != '\n')
-		i++;
-	str = (char *)malloc(sizeof(char) * (i + 2));
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (line[i] && line[i] != '\n')
+	while (s1[i])
 	{
-		str[i] = line[i];
+		dst[i] = s1[i];
 		i++;
 	}
-	str[i] = '\n';
-	str[i++] = '\0';
-	return (str);
+	dst[i] = '\0';
+	return (dst);
 }
 
-/*get the remnant line (i.e. the begining of the next line)*/
-char	*get_left(char *line)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*str;
-	int	i;
-	int	j;
+	char	*ptr;
+	size_t	i;
+	size_t	s_len;
 
+	if (!s)
+		return (NULL);
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		return (ft_strdup(""));
+	if (len > s_len - start)
+		len = s_len - start;
+	ptr = (char *)malloc(len + 1);
+	if (!ptr)
+		return (NULL);
 	i = 0;
-	j = 0;
-	if (!line)
-		return (NULL);
-	while (line[i] && line[i] != '\n')
+	while (i < len && s[start + i])
+	{
+		ptr[i] = s[start + i];
 		i++;
-	str = (char *)malloc(sizeof(char) * (ft_strlen(line) - i + 1));
-	if (!str)
-		return (NULL);
-	i++;
-	while (line[i])
-		str[j++] = line[i++];
-	str[j] = '\0';
-	free(line);
-	return (str);
+	}
+	ptr[i] = '\0';
+	return (ptr);
 }
