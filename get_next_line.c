@@ -6,49 +6,70 @@
 /*   By: mhan <mhan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/06 00:01:43 by mhan              #+#    #+#             */
-/*   Updated: 2024/06/09 18:08:57 by mhan             ###   ########.fr       */
+/*   Updated: 2024/06/16 03:01:27 by mhan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_line(const char *str)
+char	*ft_strdup(const char *s1)
 {
-	int	i;
-	char	*line;
+	char	*dst;
+	int		i;
+	int		s_len;
 
-	i= 0;
-	while (str[i] != '\n')
-		i++;
-	line = malloc (i + 1);
+	s_len = ft_strlen(s1);
+	dst = malloc(sizeof(char) * (s_len + 1));
+	if (!dst)
+		return (NULL);
 	i = 0;
-	while (str[i] != '\n')
+	while (s1[i])
 	{
-		line[i] = str[i];
+		dst[i] = s1[i];
 		i++;
 	}
-	return (line);
+	dst[i] = '\0';
+	return (dst);
 }
 
-int	search_new_line(const char *str)
+/*read the fd and join all the buffers read together to get the line*/
+char	*ft_read_fd(int fd, char *line)
 {
-	int	i;
-
-	i = 0;
-	while (str[i])
+	char	*buf;
+	int	read_bytes;
+	
+	buf = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buf)
+		return (NULL);
+	read_bytes = 1;
+	while (!ft_strchr(line, '\n') && read_bytes > 0)
 	{
-		if (str[i] == '\n')
-			return (1);
-		i++;
+		read_bytes = read(fd, buf, BUFFER_SIZE);
+		if (read_bytes == -1)
+		{
+			free(buf);
+			buf = NULL;
+			return (NULL);
+		}
+		buf[read_bytes] = '\0';
+		line = ft_strjoin(line, buf);
 	}
-	return (0);
+	free(buf);
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*line;
-	static char *next_line;
-	char	*tmp;
-
-	next_line = ft_strchr(/*mettre la static dans le seul cas ou on a une ligne entiere*/);
+	static char	*stash;
+	char	*line;
+	
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	line = ft_strdup("");
+	stash = ft_read_fd(fd, line);
+	if (!stash)
+		return (NULL);
+	line = get_line(stash);
+	stash = get_left(stash);
+	return (line);
 }
