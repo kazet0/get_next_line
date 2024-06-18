@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mhan <mhan@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/06 00:01:43 by mhan              #+#    #+#             */
-/*   Updated: 2024/06/18 16:49:11 by mhan             ###   ########.fr       */
+/*   Created: 2024/06/18 16:39:01 by mhan              #+#    #+#             */
+/*   Updated: 2024/06/18 16:47:36 by mhan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_right_line(char *line)
 {
@@ -92,19 +92,19 @@ char	*initialize_buf(int fd, char **stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[MAX_FD];
 	char		*line;
 	char		*buf;
 	char		*tmp;
 
-	buf = initialize_buf(fd, &stash);
+	buf = initialize_buf(fd, &stash[fd]);
 	if (!buf)
 		return (NULL);
-	line = ft_read_fd(fd, stash, buf);
+	line = ft_read_fd(fd, stash[fd], buf);
 	free(buf);
 	if (!line)
 		return (NULL);
-	stash = get_right_line(line);
+	stash[fd] = get_right_line(line);
 	tmp = ft_strdup(line);
 	free(line);
 	return (tmp);
